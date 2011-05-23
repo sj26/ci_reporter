@@ -23,6 +23,14 @@ CI::Reporter works best with projects that use a +Rakefile+ along with the stand
 
 Report files are written, by default, to the <code>test/reports</code>, <code>features/reports</code> or <code>spec/reports</code> subdirectory of your project.  If you wish to customize the location, simply set the environment variable CI_REPORTS (either in the environment, on the Rake command line, or in your Rakefile) to the location where they should go.
 
+== Rails Usage
+
+Just add `gem ci_reporter` to your Gemfile.
+
+This sets up your normal Cucumber, RSpec and Test::Unit tasks to automagically spit out CI reports to the default locations. You can customise which tasks get modified and what path to place reports into in your `config/application.rb` or `config/environment/<env>.rb` as usual using `config.ci_reporter.report_path = 'reports'` for instance. See the railtie file for all configuration options.
+
+You can scope the gem to your CI's environment using `:group => <env>` if you wish, but then configuration can only go in that environments file (`config/environment/<env>.rb`) and it will only work if you specify the environment *before* running rake, i.e. `RAILS_ENV=<env> rake`, so that the gem is loaded when rake is looking for tasks.
+
 == Advanced Usage
 
 If you don't have control over the Rakefile or don't want to modify it, CI::Reporter has a substitute rake file that you can specify on the command-line.  It assumes that the main project rake file is called +Rakefile+ and lives in the current directory.  Run like so:
