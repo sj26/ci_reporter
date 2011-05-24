@@ -7,7 +7,7 @@ require File.expand_path('../utils', __FILE__)
 namespace :ci do
   namespace :setup do
     task :spec_report_cleanup do
-      rm_rf ENV["CI_REPORTS"] || "spec/reports"
+      rm Dir[File.join(ENV["CI_REPORTS"] || "spec/reports", "SPEC-*.xml")]
     end
 
     task :rspec => :spec_report_cleanup do

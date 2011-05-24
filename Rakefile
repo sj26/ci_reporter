@@ -1,11 +1,20 @@
 MANIFEST = FileList["History.txt", "Manifest.txt", "README.txt", "LICENSE.txt", "Rakefile",
   "*.rake", "lib/**/*.rb", "spec/**/*.rb", "tasks/**/*.rake"]
 
+# XXX: This should be a rake task
+File.open("Manifest.txt", "w") {|f| MANIFEST.each {|n| f << "#{n}\n"} }
+
 begin
-  File.open("Manifest.txt", "w") {|f| MANIFEST.each {|n| f << "#{n}\n"} }
   require 'hoe'
+rescue LoadError
+  puts "You really need Hoe installed to be able to package this gem"
+end
+
+if defined? Hoe
   Hoe.plugin :rubyforge
+  
   require File.dirname(__FILE__) + '/lib/ci/reporter/version'
+  
   hoe = Hoe.spec("ci_reporter") do |p|
     p.version = CI::Reporter::VERSION
     p.rubyforge_name = "caldersphere"
@@ -25,9 +34,8 @@ begin
   task :gemspec do
     File.open("#{hoe.name}.gemspec", "w") {|f| f << hoe.spec.to_ruby }
   end
+  
   task :package => :gemspec
-rescue LoadError
-  puts "You really need Hoe installed to be able to package this gem"
 end
 
 # Hoe insists on setting task :default => :test
@@ -87,7 +95,6 @@ task :generate_output do
   begin
     `ruby -Ilib -rubygems -rci/reporter/rake/test_unit_loader acceptance/test_unit_example_test.rb` rescue puts "Warning: #{$!}"
     `ruby -Ilib -rubygems -S #{@spec_bin} --require ci/reporter/rake/rspec_loader --format CI::Reporter::RSpec acceptance/rspec_example_spec.rb` rescue puts "Warning: #{$!}"
-    `ruby -Ilib -rubygems -rci/reporter/rake/cucumber_loader -S cucumber --format CI::Reporter::Cucumber acceptance/cucumber` rescue puts "Warning: #{$!}"
   ensure
     ENV.delete 'CI_REPORTS'
   end

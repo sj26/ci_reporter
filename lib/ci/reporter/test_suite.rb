@@ -39,7 +39,8 @@ module CI
     class TestSuite < Struct.new(:name, :tests, :time, :failures, :errors, :skipped, :assertions)
       attr_accessor :testcases
       attr_accessor :stdout, :stderr
-      def initialize(name)
+      
+      def initialize(name=nil)
         super(name.to_s) # RSpec passes a "description" object instead of a string
         @testcases = []
       end

@@ -6,7 +6,6 @@ module CI
       config.ci_reporter = ActiveSupport::OrderedOptions.new
       
       # Turn individual reports on or off in rails configuration
-      config.ci_reporter.cucumber  = true
       config.ci_reporter.rspec     = true
       config.ci_reporter.test_unit = true
       
@@ -14,7 +13,6 @@ module CI
       config.ci_reporter.reports_path = nil
       
       rake_tasks do
-        require 'ci/reporter/rake/cucumber'
         require 'ci/reporter/rake/rspec'
         require 'ci/reporter/rake/test_unit'
         
@@ -23,9 +21,8 @@ module CI
           ENV["CI_REPORTS"] ||= config.ci_reporter.reports_path
         end
         
-        task :cucumber => ["ci:setup:config", "ci:setup:cucumber"] if config.ci_reporter.cucumber
-        task :spec     => ["ci:setup:config", "ci:setup:rspec"]    if config.ci_reporter.rspec
-        task :test     => ["ci:setup:config", "ci:setup:testunit"] if config.ci_reporter.test_unit
+        task :spec => ["ci:setup:config", "ci:setup:rspec"]    if config.ci_reporter.rspec
+        task :test => ["ci:setup:config", "ci:setup:testunit"] if config.ci_reporter.test_unit
       end
     end
   end
