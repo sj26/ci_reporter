@@ -7,6 +7,7 @@ GEM
       rake (>= 0.8.7)
     json_pure (1.5.1)
     rake (0.8.7)
+    rcov (0.9.9)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -15,6 +16,8 @@ GEM
     rspec-expectations (2.5.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.5.0)
+    rubyforge (2.0.4)
+      json_pure (>= 1.1.7)
     test-unit (2.3.0)
 
 PLATFORMS
@@ -24,5 +27,7 @@ PLATFORMS
 DEPENDENCIES
   builder
   hoe
+  rcov
   rspec (> 2.0.0)
+  rubyforge
   test-unit (> 2.0.0)
